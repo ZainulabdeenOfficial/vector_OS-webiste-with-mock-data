@@ -7,6 +7,7 @@ import Footer from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/context/auth-context"
 import { DataProvider } from "@/context/data-context"
+import { Toaster } from "@/components/ui/toaster"
 
 // Optimize font loading with display swap
 const inter = Inter({
@@ -49,6 +50,7 @@ export default function RootLayout({
                 <main className="flex-1">{children}</main>
                 <Footer />
               </div>
+              <Toaster />
             </ThemeProvider>
           </DataProvider>
         </AuthProvider>

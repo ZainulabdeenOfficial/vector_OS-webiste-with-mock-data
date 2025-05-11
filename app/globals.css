@@ -77,7 +77,7 @@
 
   /* Optimized dark mode transition */
   :root {
-    --transition-duration: 0.3s;
+    --transition-duration: 0.2s;
   }
 
   html.dark {
@@ -113,6 +113,17 @@
 }
 
 @layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
   /* Optimized animations */
   .animate-fade-in {
     animation: fade-in 0.3s ease-out forwards;

@@ -17,6 +17,7 @@ type Project = {
   year?: string
   duration?: string
   tags?: string
+  features?: string
 }
 
 type Blog = {
@@ -48,7 +49,7 @@ const initialProjects: Project[] = [
     id: "1",
     title: "VectorOS Launchpad",
     description: "An innovative platform that streamlines Linux app deployments using containerized micro-services.",
-    imageUrl: "https://example.com/images/vectoros.png",
+    imageUrl: "/placeholder.svg?height=600&width=1200",
     projectUrl: "https://vectoros.example.com",
     githubUrl: "https://github.com/yourname/vectoros",
     featured: true,
@@ -58,12 +59,13 @@ const initialProjects: Project[] = [
     year: "2023",
     duration: "6 months",
     tags: "React, Docker, Linux, Microservices",
+    features: "Responsive design, Containerized deployment, Real-time monitoring, Automated scaling",
   },
   {
     id: "2",
     title: "Cloud Infrastructure",
     description: "A scalable cloud infrastructure solution for modern web applications.",
-    imageUrl: "/placeholder.svg?height=300&width=500",
+    imageUrl: "/placeholder.svg?height=600&width=1200",
     projectUrl: "https://cloud.example.com",
     githubUrl: "https://github.com/yourname/cloud-infra",
     featured: false,
@@ -73,12 +75,13 @@ const initialProjects: Project[] = [
     year: "2022",
     duration: "4 months",
     tags: "AWS, Azure, DevOps, Terraform",
+    features: "Multi-cloud support, Infrastructure as code, CI/CD integration, Cost optimization",
   },
   {
     id: "3",
     title: "AI Assistant",
     description: "An intelligent assistant powered by machine learning algorithms.",
-    imageUrl: "/placeholder.svg?height=300&width=500",
+    imageUrl: "/placeholder.svg?height=600&width=1200",
     projectUrl: "https://ai.example.com",
     githubUrl: "https://github.com/yourname/ai-assistant",
     featured: true,
@@ -88,6 +91,7 @@ const initialProjects: Project[] = [
     year: "2023",
     duration: "8 months",
     tags: "Python, TensorFlow, NLP, Machine Learning",
+    features: "Natural language processing, Voice recognition, Contextual understanding, Continuous learning",
   },
 ]
 
@@ -96,7 +100,7 @@ const initialBlogs: Blog[] = [
     id: "1",
     title: "Understanding JavaScript Closures",
     content:
-      "Closures are functions that have access to variables from another function's scope. This is often used to create private variables.",
+      "Closures are functions that have access to variables from another function's scope. This is often used to create private variables.\n\nA closure is created when a function is defined inside another function, allowing the inner function to access variables from the outer function even after the outer function has finished executing.\n\nClosures are a powerful feature of JavaScript that enable data encapsulation and private state. They are commonly used in module patterns, callback functions, and event handlers.\n\nHere's a simple example of a closure:\n\n```javascript\nfunction createCounter() {\n  let count = 0;\n  \n  return function() {\n    count++;\n    return count;\n  };\n}\n\nconst counter = createCounter();\nconsole.log(counter()); // 1\nconsole.log(counter()); // 2\n```\n\nIn this example, the inner function maintains access to the `count` variable even after `createCounter` has finished executing. This is the essence of a closure.",
     excerpt: "A quick guide to understanding closures in JavaScript.",
     published: true,
     slug: "understanding-javascript-closures",
@@ -108,7 +112,7 @@ const initialBlogs: Blog[] = [
     id: "2",
     title: "Mastering React Hooks",
     content:
-      "React Hooks are a powerful feature that allows you to use state and other React features without writing a class.",
+      "React Hooks are a powerful feature that allows you to use state and other React features without writing a class.\n\nIntroduced in React 16.8, hooks let you 'hook into' React state and lifecycle features from function components. This means you can write more concise and readable code without the complexity of classes.\n\nThe most commonly used hooks are:\n\n- useState: For managing state in function components\n- useEffect: For handling side effects like data fetching\n- useContext: For consuming context in a component\n- useRef: For creating mutable references\n- useCallback and useMemo: For optimizing performance\n\nHooks follow two important rules:\n\n1. Only call hooks at the top level of your component\n2. Only call hooks from React function components or custom hooks\n\nBy following these rules, you ensure that hooks maintain their state correctly between renders.",
     excerpt: "Learn how to use React Hooks effectively in your projects.",
     published: true,
     slug: "mastering-react-hooks",
@@ -120,7 +124,7 @@ const initialBlogs: Blog[] = [
     id: "3",
     title: "CSS Grid Layout Guide",
     content:
-      "CSS Grid Layout is a two-dimensional layout system designed for the web. It lets you lay content out in rows and columns.",
+      "CSS Grid Layout is a two-dimensional layout system designed for the web. It lets you lay content out in rows and columns.\n\nUnlike Flexbox which is primarily designed for one-dimensional layouts, Grid is designed for two-dimensional layouts - meaning it can handle both columns and rows.\n\nTo create a grid container, you set the display property to 'grid' or 'inline-grid'. Then you can define the columns and rows using the grid-template-columns and grid-template-rows properties.\n\n```css\n.container {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  grid-template-rows: auto;\n  gap: 20px;\n}\n```\n\nThe 'fr' unit represents a fraction of the available space. In the example above, we're creating three equal columns.\n\nGrid also introduces powerful features like:\n\n- Grid areas for naming sections of your layout\n- Auto-placement algorithms for automatically positioning items\n- Alignment control for both the grid itself and individual items\n- The ability to overlap items\n\nWith CSS Grid, complex layouts that were once difficult to achieve with CSS are now much simpler to implement.",
     excerpt: "A comprehensive guide to CSS Grid Layout.",
     published: true,
     slug: "css-grid-layout-guide",

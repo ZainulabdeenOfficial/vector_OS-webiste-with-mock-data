@@ -12,6 +12,7 @@ import { CardActions } from "@/components/card-actions"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { useState } from "react"
+import { toast } from "@/components/ui/use-toast"
 
 export default function ProjectsPage() {
   const { projects, deleteProject } = useData()
@@ -28,6 +29,20 @@ export default function ProjectsPage() {
   const filteredProjects = selectedCategory
     ? projects.filter((project) => project.tags?.includes(selectedCategory))
     : projects
+
+  // Handle edit project
+  const handleEditProject = (projectId: string) => {
+    router.push(`/dashboard/edit-project/${projectId}`)
+  }
+
+  // Handle delete project
+  const handleDeleteProject = (projectId: string) => {
+    deleteProject(projectId)
+    toast({
+      title: "Project deleted",
+      description: "The project has been successfully deleted.",
+    })
+  }
 
   // Animation variants
   const container = {
@@ -62,12 +77,12 @@ export default function ProjectsPage() {
         </p>
 
         {/* Filter buttons */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 mb-8 px-2 overflow-x-auto">
           <Button
             variant={selectedCategory === null ? "default" : "outline"}
             size="sm"
             onClick={() => setSelectedCategory(null)}
-            className="rounded-full"
+            className="rounded-full whitespace-nowrap"
           >
             All Projects
           </Button>
@@ -77,7 +92,7 @@ export default function ProjectsPage() {
               variant={selectedCategory === category ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedCategory(category)}
-              className="rounded-full"
+              className="rounded-full whitespace-nowrap"
             >
               {category}
             </Button>
@@ -88,52 +103,57 @@ export default function ProjectsPage() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8"
         >
           {filteredProjects.map((project) => (
             <motion.div key={project.id} variants={item}>
-              <Card className="group overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 relative">
+              <div className="relative group h-full">
                 {(isAuthenticated || isAdmin) && (
                   <CardActions
-                    onEdit={() => router.push(`/dashboard/edit-project/${project.id}`)}
-                    onDelete={() => deleteProject(project.id)}
+                    onEdit={() => handleEditProject(project.id)}
+                    onDelete={() => handleDeleteProject(project.id)}
+                    itemType="project"
                   />
                 )}
-                <div className="relative h-56 overflow-hidden">
-                  <Image
-                    src={project.imageUrl || "/placeholder.svg?height=300&width=500"}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Link href={`/projects/${project.slug}`}>
-                      <Button variant="secondary" size="sm" className="gap-2">
-                        <Eye size={16} />
-                        View Project
-                      </Button>
-                    </Link>
-                  </div>
-                  {project.featured && (
-                    <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full">
-                      Featured
+                <Card className="group overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 h-full">
+                  <div className="relative h-48 sm:h-56 overflow-hidden">
+                    <Image
+                      src={project.imageUrl || "/placeholder.svg?height=300&width=500"}
+                      alt={project.title || "Project"}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                      <Link href={`/projects/${project.slug}`}>
+                        <Button variant="secondary" size="sm" className="gap-2">
+                          <Eye size={16} />
+                          View Project
+                        </Button>
+                      </Link>
                     </div>
-                  )}
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags?.split(",").map((tag, index) => (
-                      <Badge key={index} variant="secondary" className="font-normal">
-                        {tag.trim()}
-                      </Badge>
-                    ))}
+                    {project.featured && (
+                      <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full">
+                        Featured
+                      </div>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
+                  <CardContent className="p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                      {project.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-4 line-clamp-2 text-sm sm:text-base">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags?.split(",").map((tag, index) => (
+                        <Badge key={index} variant="secondary" className="font-normal text-xs">
+                          {tag.trim()}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </motion.div>
           ))}
         </motion.div>

@@ -27,6 +27,19 @@ const navItems = [
   { name: "About", href: "/about" },
 ]
 
+// Optimize the navbar animations and transitions for smoother performance
+// Improve mobile responsiveness
+
+// Update the animation properties for smoother transitions
+const navItemAnimation = {
+  initial: { y: -5, opacity: 0 },
+  animate: { y: 0, opacity: 1 },
+  transition: {
+    duration: 0.15, // Shorter duration for smoother animation
+    ease: "easeOut",
+  },
+}
+
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -57,11 +70,11 @@ export default function Navbar() {
           {navItems.map((item, index) => (
             <motion.div
               key={item.name}
-              initial={{ y: -8, opacity: 0 }}
+              initial={{ y: -5, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                duration: 0.2, // Shorter animation
-                delay: 0.03 * (index + 1),
+                duration: 0.15,
+                delay: 0.02 * (index + 1),
                 ease: "easeOut",
               }}
               style={{ willChange: "transform, opacity" }}
@@ -76,7 +89,7 @@ export default function Navbar() {
                 {item.name}
                 <span
                   className={cn(
-                    "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-200",
+                    "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-150",
                     pathname === item.href ? "w-full" : "w-0 group-hover:w-full",
                   )}
                 ></span>
@@ -190,7 +203,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }} // Shorter animation
+            transition={{ duration: 0.15, ease: "easeInOut" }}
             className="md:hidden border-b bg-background/95 backdrop-blur-md overflow-hidden"
             style={{ willChange: "opacity, height" }}
           >
@@ -199,11 +212,11 @@ export default function Navbar() {
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.name}
-                    initial={{ x: -8, opacity: 0 }}
+                    initial={{ x: -5, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{
-                      duration: 0.15, // Shorter animation
-                      delay: 0.02 * index,
+                      duration: 0.1,
+                      delay: 0.01 * index,
                       ease: "easeOut",
                     }}
                     style={{ willChange: "transform, opacity" }}

@@ -17,6 +17,7 @@ const featuredProjects = [
     description: "A modern e-commerce platform with a sleek UI, shopping cart functionality, and payment integration.",
     image: "/placeholder.svg?height=300&width=500",
     tags: ["React", "Next.js", "Tailwind CSS"],
+    slug: "ecommerce-platform",
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ const featuredProjects = [
     description: "A creative portfolio website for a photographer with image galleries and contact form.",
     image: "/placeholder.svg?height=300&width=500",
     tags: ["React", "Three.js", "GSAP"],
+    slug: "portfolio-website",
   },
 ]
 
@@ -121,7 +123,7 @@ export default function FeaturedSection() {
                     loading="eager"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Link href={`/projects/${project.id}`}>
+                    <Link href={`/projects/${project.slug}`}>
                       <Button variant="secondary" size="sm" className="gap-2 rounded-full shadow-lg">
                         View Project
                         <ArrowRight size={16} />

@@ -12,6 +12,7 @@ import { CardActions } from "@/components/card-actions"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { toast } from "@/components/ui/use-toast"
 
 export default function BlogsPage() {
   const { blogs, deleteBlog } = useData()
@@ -26,11 +27,26 @@ export default function BlogsPage() {
   // Filter blogs by search query and category
   const filteredBlogs = blogs.filter((blog) => {
     const matchesSearch =
-      blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+      blog.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      blog.excerpt?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      false
     const matchesCategory = selectedCategory === "All" || blog.category === selectedCategory
     return matchesSearch && matchesCategory
   })
+
+  // Handle edit blog
+  const handleEditBlog = (blogId: string) => {
+    router.push(`/dashboard/edit-blog/${blogId}`)
+  }
+
+  // Handle delete blog
+  const handleDeleteBlog = (blogId: string) => {
+    deleteBlog(blogId)
+    toast({
+      title: "Blog deleted",
+      description: "The blog has been successfully deleted.",
+    })
+  }
 
   // Animation variants
   const container = {
@@ -71,12 +87,13 @@ export default function BlogsPage() {
             />
           </div>
 
-          <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+          <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 no-scrollbar">
             {categories.map((category) => (
               <Button
                 key={category}
                 variant={category === selectedCategory ? "default" : "outline"}
                 size="sm"
+                className="whitespace-nowrap"
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -93,38 +110,43 @@ export default function BlogsPage() {
         >
           {filteredBlogs.map((blog) => (
             <motion.div key={blog.id} variants={item}>
-              <Link href={`/blogs/${blog.slug}`} className="group">
-                <Card className="overflow-hidden h-full transition-all duration-300 hover:shadow-md relative">
-                  {(isAuthenticated || isAdmin) && (
-                    <CardActions
-                      onEdit={() => router.push(`/dashboard/edit-blog/${blog.id}`)}
-                      onDelete={() => deleteBlog(blog.id)}
-                    />
-                  )}
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={"/placeholder.svg?height=200&width=400"}
-                      alt={blog.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded">
-                      {blog.category}
+              <div className="relative group h-full">
+                {(isAuthenticated || isAdmin) && (
+                  <CardActions
+                    onEdit={() => handleEditBlog(blog.id)}
+                    onDelete={() => handleDeleteBlog(blog.id)}
+                    itemType="blog"
+                  />
+                )}
+                <Link href={`/blogs/${blog.slug}`} className="block h-full">
+                  <Card className="overflow-hidden h-full transition-all duration-300 hover:shadow-md">
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={"/placeholder.svg?height=200&width=400"}
+                        alt={blog.title || "Blog post"}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      {blog.category && (
+                        <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded">
+                          {blog.category}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-                      {blog.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground line-clamp-3">{blog.excerpt}</p>
-                  </CardContent>
-                  <CardFooter className="text-sm text-muted-foreground">
-                    {new Date(blog.date).toLocaleDateString()}
-                  </CardFooter>
-                </Card>
-              </Link>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
+                        {blog.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground line-clamp-3">{blog.excerpt}</p>
+                    </CardContent>
+                    <CardFooter className="text-sm text-muted-foreground">
+                      {new Date(blog.date).toLocaleDateString()}
+                    </CardFooter>
+                  </Card>
+                </Link>
+              </div>
             </motion.div>
           ))}
         </motion.div>
